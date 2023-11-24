@@ -55,6 +55,38 @@ namespace WebApiDemo1225.Controllers
             return result;
         }
 
+        [HttpGet("BestStudents")]
+        public IEnumerable<PlayerDto> GetBestStudents()
+        {
+            var result = Players.Where(p=>p.Score>=85).Select(x =>
+            {
+                return new PlayerDto
+                {
+                    Id = x.Id,
+                    PlayerName = x.PlayerName,
+                    Score = x.Score
+                };
+            });
+            return result;
+        }
+
+        [HttpGet("Search")]
+        public IEnumerable<PlayerExtendDto> Search(string key)
+        {
+            var keyResult = key.ToLower().Trim();
+            var result = Players.Where(p => p.City.ToLower().Contains(keyResult)
+            || p.PlayerName.ToLower().Contains(keyResult)).Select(x =>
+            {
+                return new PlayerExtendDto
+                {
+                    Id = x.Id,
+                    PlayerName = x.PlayerName,
+                    Score = x.Score,
+                    City = x.City
+                };
+            });
+            return result;
+        }
 
         //[HttpGet("{id}")]
         //public PlayerDto? Get(int id)
@@ -88,6 +120,69 @@ namespace WebApiDemo1225.Controllers
                 return Ok(dataToReturn);
             }
             return NotFound();
+        }
+
+
+        [HttpPost]
+        public IActionResult Post([FromBody] PlayerAddDto dto)
+        {
+            try
+            {
+                var player = new Player
+                {
+                    City = dto.City,
+                    PlayerName = dto.PlayerName,
+                    Score = dto.Score,
+                    Id = dto.Id
+                };
+                Players.Add(player);
+                return Ok(player);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id,[FromBody] PlayerAddDto dto) {
+            try
+            {
+                var item=Players.FirstOrDefault(x=>x.Id == id);
+                if (item == null)
+                {
+                    return NotFound();
+                }
+                item.City=dto.City;
+                item.PlayerName=dto.PlayerName;
+                item.Score=dto.Score;
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                var item=Players.FirstOrDefault(p=>p.Id==id);
+                if (item == null)
+                {
+                    return NotFound();
+                }
+                Players.Remove(item);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
