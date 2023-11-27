@@ -38,9 +38,18 @@ namespace WebApiDemo1225.Controllers
 
         // GET api/<StudentController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public StudentDto Get(int id)
         {
-            return "value";
+            var item=_studentService.Get(id);
+            return new StudentDto
+            {
+                 Age = item.Age,
+                  Fullname = item.Fullname,
+                   Score = item.Score,
+                    Id = item.Id,
+                     SeriaNo= item.SeriaNo
+                      
+            };
         }
 
         // POST api/<StudentController>

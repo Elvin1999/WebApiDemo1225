@@ -10,5 +10,12 @@ namespace WebApiDemo1225.Data
         {
         }
         public DbSet<Student> Students { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+
+            base.OnConfiguring(optionsBuilder);
+        }
+
     }
 }
