@@ -1,4 +1,5 @@
-﻿using WebApiDemo1225.Entities;
+﻿using System.Linq.Expressions;
+using WebApiDemo1225.Entities;
 using WebApiDemo1225.Repositories.Abstract;
 using WebApiDemo1225.Services.Abstract;
 
@@ -20,13 +21,13 @@ namespace WebApiDemo1225.Services.Concrete
 
         public void Delete(int id)
         {
-            var item = _studentRepository.Get(id);
+            var item = _studentRepository.Get(x=>x.Id==id);
             _studentRepository.Delete(item);
         }
 
-        public Student Get(int id)
+        public Student Get(Expression<Func<Student, bool>> expression)
         {
-            return _studentRepository.Get(id);
+            return _studentRepository.Get(expression);
         }
 
         public IEnumerable<Student> GetAll()

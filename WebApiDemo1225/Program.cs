@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using WebApiDemo1225.Data;
 using WebApiDemo1225.Formatters;
@@ -33,11 +34,15 @@ builder.Services.AddDbContext<StudentDbContext>(opt =>
     opt.UseSqlServer(connection);
 });
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-    builder.Configuration.Bind("JwtSettings", options))
+builder.Services.AddSingleton<
+    IAuthorizationMiddlewareResultHandler, SampleAuthorizationMiddlewareResultHandler>();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
-    options => builder.Configuration.Bind("CookieSettings", options));
+    options => { 
+    options.LoginPath = "/Account/SignIn";
+    options.LogoutPath = "/Account/SignOut";
+    });
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
@@ -47,8 +52,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<AuthenticationMiddleware>();
 app.UseAuthentication();
+
+//app.UseMiddleware<AuthenticationMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -1,4 +1,5 @@
-﻿using WebApiDemo1225.Data;
+﻿using System.Linq.Expressions;
+using WebApiDemo1225.Data;
 using WebApiDemo1225.Entities;
 using WebApiDemo1225.Repositories.Abstract;
 
@@ -25,9 +26,9 @@ namespace WebApiDemo1225.Repositories.Concrete
             _context.SaveChanges();
         }
 
-        public Student Get(int id)
+        public Student Get(Expression<Func<Student, bool>> expression)
         {
-            var student=_context.Students.SingleOrDefault(s => s.Id == id);
+            var student = _context.Students.SingleOrDefault(expression);
             return student;
         }
 

@@ -21,6 +21,7 @@ namespace WebApiDemo1225.Controllers
 
         // GET: api/<StudentController>
         [HttpGet]
+        [Authorize(Roles ="Admin")]
         public IEnumerable<StudentDto> Get()
         {
             var items = _studentService.GetAll();
@@ -42,7 +43,7 @@ namespace WebApiDemo1225.Controllers
         [HttpGet("{id}")]
         public StudentDto Get(int id)
         {
-            var item = _studentService.Get(id);
+            var item = _studentService.Get(s=>s.Id==id);
             return new StudentDto
             {
                 Age = item.Age,
