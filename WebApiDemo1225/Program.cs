@@ -34,8 +34,6 @@ builder.Services.AddDbContext<StudentDbContext>(opt =>
     opt.UseSqlServer(connection);
 });
 
-builder.Services.AddSingleton<
-    IAuthorizationMiddlewareResultHandler, SampleAuthorizationMiddlewareResultHandler>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
@@ -54,7 +52,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 
-//app.UseMiddleware<AuthenticationMiddleware>();
+app.UseMiddleware<AuthenticationMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();

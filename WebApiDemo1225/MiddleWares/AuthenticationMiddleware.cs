@@ -15,6 +15,12 @@ namespace WebApiDemo1225.MiddleWares
 
         public async Task Invoke(HttpContext context)
         {
+
+            // yoxlayin ki eger SignIn action methoddusa
+            // onda 
+             /////       await _next(context);
+             ///
+
             string authHeader = context.Request.Headers["Authorization"];
             if (authHeader == null || authHeader.Trim()=="")
             {

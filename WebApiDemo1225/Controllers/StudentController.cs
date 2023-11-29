@@ -21,7 +21,6 @@ namespace WebApiDemo1225.Controllers
 
         // GET: api/<StudentController>
         [HttpGet]
-        [Authorize(Roles ="Admin")]
         public IEnumerable<StudentDto> Get()
         {
             var items = _studentService.GetAll();
