@@ -29,7 +29,6 @@ namespace WebApiDemo1225.Formatters
             using var reader = new StreamReader(httpContext.Request.Body, effectiveEncoding);
             string? nameLine = null;
 
-
             /*
              *  
              *  sb.AppendLine($"FN:{item.Fullname}");

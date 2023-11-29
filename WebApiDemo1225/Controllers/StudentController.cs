@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebApiDemo1225.Dtos;
 using WebApiDemo1225.Entities;
 using WebApiDemo1225.Services.Abstract;
@@ -41,15 +42,15 @@ namespace WebApiDemo1225.Controllers
         [HttpGet("{id}")]
         public StudentDto Get(int id)
         {
-            var item=_studentService.Get(id);
+            var item = _studentService.Get(id);
             return new StudentDto
             {
-                 Age = item.Age,
-                  Fullname = item.Fullname,
-                   Score = item.Score,
-                    Id = item.Id,
-                     SeriaNo= item.SeriaNo
-                      
+                Age = item.Age,
+                Fullname = item.Fullname,
+                Score = item.Score,
+                Id = item.Id,
+                SeriaNo = item.SeriaNo
+
             };
         }
 
@@ -61,13 +62,13 @@ namespace WebApiDemo1225.Controllers
             {
                 var entity = new Student
                 {
-                     Age= value.Age,
-                      Fullname= value.Fullname,
-                       Score= value.Score,
-                        SeriaNo = value.SeriaNo
+                    Age = value.Age,
+                    Fullname = value.Fullname,
+                    Score = value.Score,
+                    SeriaNo = value.SeriaNo
                 };
-                _studentService.Add(entity);    
-                return Ok(entity);  
+                _studentService.Add(entity);
+                return Ok(entity);
             }
             catch (Exception ex)
             {
